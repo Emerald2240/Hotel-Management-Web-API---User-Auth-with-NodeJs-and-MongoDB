@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
 const constants = require("./src/constants");
+const { MESSAGES } = constants;
 const database = require("./src/database/database");
 const rootRoute = require("./src/routes/index.route");
 const app = express();
@@ -17,7 +18,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
 //channel to all routes
-app.use('api/v1', rootRoute);
+app.get("/", (req, res) => {
+    res.status(200).send({ message: MESSAGES.DEFAULT, success: true });
+});
+app.use('/api/v1', rootRoute);
 
 //Set our default port to 5000
 const PORT = process.env.PORT || 5000;
