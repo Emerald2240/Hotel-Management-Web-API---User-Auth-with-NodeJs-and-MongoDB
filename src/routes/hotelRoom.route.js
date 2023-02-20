@@ -2,15 +2,16 @@ const express = require('express')
 const hotelRoomRouter = express.Router()
 const hotelController = require('../controllers/hotel.controller')
 const authenticateToken = require('../middlewares/auth.middleware')
+const adminAuthorization = require("../middlewares/adminPriviledges.middleware")
 
 hotelRoomRouter.get("/", authenticateToken, hotelController.fetchAllRooms);
 hotelRoomRouter.get("/:id", authenticateToken, hotelController.fetchRoomBasic);
 hotelRoomRouter.get("/search", authenticateToken, hotelController.fetchRoomAdvanced);
 
-hotelRoomRouter.post("/", authenticateToken, hotelController.createRoom);
+hotelRoomRouter.post("/", authenticateToken, adminAuthorization, hotelController.createRoom);
 
-hotelRoomRouter.patch("/:roomId", authenticateToken, hotelController.editRoom);
+hotelRoomRouter.patch("/:roomId", authenticateToken, adminAuthorization, hotelController.editRoom);
 
-hotelRoomRouter.delete("/:roomId", authenticateToken, hotelController.deleteRoom);
+hotelRoomRouter.delete("/:roomId", authenticateToken, adminAuthorization, hotelController.deleteRoom);
 
 module.exports = hotelRoomRouter;
