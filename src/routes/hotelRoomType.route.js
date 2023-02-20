@@ -1,7 +1,7 @@
 const express = require('express');
 const hotelRoomTypeRouter = express.Router()
 const hotelController = require('../controllers/hotel.controller')
-const authenticate = require('../middlewares/auth.middleware')
+const authenticateToken = require('../middlewares/auth.middleware')
 
 hotelRoomTypeRouter.get("/", hotelController.fetchRoomTypes);
 hotelRoomTypeRouter.get("/:id", hotelController.fetchRoomType);
