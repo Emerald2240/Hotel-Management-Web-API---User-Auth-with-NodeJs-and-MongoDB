@@ -4,13 +4,13 @@ const hotelController = require('../controllers/hotel.controller')
 const authenticateToken = require('../middlewares/auth.middleware')
 
 hotelRoomRouter.get("/", authenticateToken, hotelController.fetchAllRooms);
-hotelRoomRouter.get("/:id", hotelController.fetchRoomBasic);
-hotelRoomRouter.get("/search", hotelController.fetchRoomAdvanced);
+hotelRoomRouter.get("/:id", authenticateToken, hotelController.fetchRoomBasic);
+hotelRoomRouter.get("/search", authenticateToken, hotelController.fetchRoomAdvanced);
 
-hotelRoomRouter.post("/", hotelController.createRoom);
+hotelRoomRouter.post("/", authenticateToken, hotelController.createRoom);
 
-hotelRoomRouter.patch("/:roomId", hotelController.editRoom);
+hotelRoomRouter.patch("/:roomId", authenticateToken, hotelController.editRoom);
 
-hotelRoomRouter.delete("/:roomId", hotelController.deleteRoom);
+hotelRoomRouter.delete("/:roomId", authenticateToken, hotelController.deleteRoom);
 
 module.exports = hotelRoomRouter;

@@ -14,9 +14,9 @@ const authenticateToken = (req, res, next) => {
         return res.status(401).send({ message: "Missing access token. Pass it in the headers: Auth section. In this format: 'Bearer sdfweuwe324wrw324sxs...'" });
     } else {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-            if (err) return res.status(403).send({ message:"Please login first", err });
+            if (err) return res.status(403).send({ message: "Please login first", err });
             req.user = user
-            
+
             next();
         });
     }
