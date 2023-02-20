@@ -8,14 +8,14 @@ const authenticateToken = require('../middlewares/auth.middleware');
 userRouter.post("/", userController.signUp);
 
 //READ
-userRouter.get("/", userController.fetchAllUsers);
-userRouter.get("/:email", userController.fetchUser);
+userRouter.get("/", authenticateToken, userController.fetchAllUsers);
+userRouter.get("/:email", authenticateToken, userController.fetchUser);
 
 //UPDATE
-userRouter.patch("/:email", userController.updateUserProfile);
+userRouter.patch("/:email", authenticateToken, userController.updateUserProfile);
 
 //DELETE
-userRouter.delete("/:email", userController.deleteUserAccount);
+userRouter.delete("/:email", authenticateToken, userController.deleteUserAccount);
 
 
 module.exports = userRouter;

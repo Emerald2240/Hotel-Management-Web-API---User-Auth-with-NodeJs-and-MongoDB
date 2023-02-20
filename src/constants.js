@@ -22,7 +22,9 @@ const constants = {
         HOTEL_ROOM_TYPE_DEFAULT: "",
         AUTH_DEFAULT: "",
         LOGOUT: "Successfully logged out! Have a nice day.",
-        LOGIN_FIRST: "Error! Login first"
+        LOGIN_FIRST: "Error! Login first",
+        LOGGED_IN:"Successfully logged in",
+        LOGIN_FAILURE:"Unable to login. Username or password incorrect"
     }
 };
 

@@ -1,7 +1,6 @@
 const express = require('express')
 const hotelRoomRouter = express.Router()
 const hotelController = require('../controllers/hotel.controller')
-const jwt = require('jsonwebtoken');
 const authenticateToken = require('../middlewares/auth.middleware')
 
 hotelRoomRouter.get("/", authenticateToken, hotelController.fetchAllRooms);
