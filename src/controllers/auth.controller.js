@@ -36,7 +36,7 @@ class AuthController {
     async login(req, res) {
 
         const joiSchema = joi.object({
-          
+
             email: joi.string()
                 .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
                 .required(),
@@ -47,24 +47,24 @@ class AuthController {
                 .required(),
         });
 
-        try{
-            const value = await joiSchema.validateAsync({email: req.body.email, password: req.body.password});
-        }catch(err){
-            res.status(418).send({message: "Invalid credentials"})
-        }
+        try {
+            const value = await joiSchema.validateAsync({ email: req.body.email, password: req.body.password });
 
+            user = await authService.login(req.body.email, req.body.password);
+            console.log(user);
+            if (user) {
+                const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
+                const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+                refreshTokenStore = refreshToken;
+                res.status(200)
+                    .json({ message: MESSAGES.LOGGED_IN, accessToken: accessToken, refreshToken: refreshToken });
+            } else {
+                res.status(403)
+                    .send({ message: MESSAGES.LOGIN_FAILURE });
+            }
 
-        user = await authService.login(req.body.email, req.body.password);
-        console.log(user);
-        if (user) {
-            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
-            const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-            refreshTokenStore = refreshToken;
-            res.status(200)
-                .json({ message: MESSAGES.LOGGED_IN, accessToken: accessToken, refreshToken: refreshToken });
-        } else {
-            res.status(403)
-                .send({ message: MESSAGES.LOGIN_FAILURE });
+        } catch (err) {
+            res.status(418).send({ message: "Invalid credentials" })
         }
     }
 
