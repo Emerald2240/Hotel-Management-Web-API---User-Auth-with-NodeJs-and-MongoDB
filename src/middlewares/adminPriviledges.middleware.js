@@ -1,3 +1,4 @@
+//If the user is not an admin, stop them from moving further
 const adminAuthorization = (req, res, next) => {
     if (req.user.user_type === "admin") {
         next()

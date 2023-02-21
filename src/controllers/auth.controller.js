@@ -13,6 +13,7 @@ var refreshTokenStore = '';
 
 class AuthController {
 
+    //Once a user logs in, an expirable access token and an inexpirable refresh token is provided. This is for security reasons... The refresh token creates a new access token once the former one expires
     async refreshAccessToken(req, res) {
         const refreshToken = req.body.token;
         if (refreshToken == null) {
@@ -21,10 +22,13 @@ class AuthController {
             if (refreshTokenStore !== refreshToken) {
                 return res.status(403).send({ message: "Invalid token" });
             } else {
+
+                //verify if refresh token is valid
                 jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
                     if (err) {
                         return res.status(403).send(err);
                     } else {
+                        //create a new access token
                         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
                         res.json({ accessToken: accessToken });
                     }
@@ -33,8 +37,10 @@ class AuthController {
         }
     }
 
+    //Takes an email and password in the query body and checks the db if they match
     async login(req, res) {
 
+        //validate user input with JOI
         const joiSchema = joi.object({
 
             email: joi.string()
@@ -50,9 +56,12 @@ class AuthController {
         try {
             const value = await joiSchema.validateAsync({ email: req.body.email, password: req.body.password });
 
+            //pass the data to the login service module
             user = await authService.login(req.body.email, req.body.password);
             console.log(user);
             if (user) {
+
+                //creates new access token and refresh token for the user
                 const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
                 const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
                 refreshTokenStore = refreshToken;
@@ -68,6 +77,7 @@ class AuthController {
         }
     }
 
+    //Deletes the refresh token from the app
     async logout(req, res) {
         if (refreshTokenStore != '') {
             refreshTokenStore = '';

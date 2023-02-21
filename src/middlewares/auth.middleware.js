@@ -5,6 +5,7 @@ const authenticate = (req, res, next) => {
     next()
 }
 
+//Use json web token node module to validate access tokens and get encrypted user data
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const user = req.user;

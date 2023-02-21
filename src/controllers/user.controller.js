@@ -9,7 +9,10 @@ class UserController {
         res.status(200).send({ message: MESSAGES.DEFAULT, success: true });
     };
 
+    //Create a new user
     async signUp(req, res) {
+
+        //verify user entries with JOI
         const joiSchema = joi.object({
             first_name: joi.string()
                 .min(3)
@@ -50,6 +53,7 @@ class UserController {
         }
     }
 
+    //get user from the database, using their email
     async fetchUser(req, res) {
         try {
             const data = await userService.getUser(req.params.email);
@@ -70,6 +74,7 @@ class UserController {
         }
     }
 
+    //get all users in the user collection/table
     async fetchAllUsers(req, res) {
         try {
             const data = await userService.getAllUsers();
@@ -90,6 +95,7 @@ class UserController {
         }
     }
 
+    //Update/edit user data
     async updateUserProfile(req, res) {
         try {
             const data = await userService.updateUserByEmail(req.params.email, req.body);
@@ -109,6 +115,7 @@ class UserController {
         }
     }
 
+    //Delete user account entirely from the database
     async deleteUserAccount(req, res) {
         try {
             const data = await userService.deleteUser(req.params.email);

@@ -2,9 +2,15 @@ const User = require("../models/UserModel");
 const bcryptEncrypter = require("bcrypt");
 
 class UserService {
+
+    //Create new user
     async createUser(user) {
+
+        //Add salt to hashing to make it unique
         const salt = await bcryptEncrypter.genSalt();
         const originalPassword = user.password;
+
+        //Hash and encrypt user entered password
         const hashedPassword = await bcryptEncrypter.hash(originalPassword, salt);
 
         user.password = hashedPassword;
@@ -24,6 +30,8 @@ class UserService {
     }
 
     async updateUserByEmail(email, data) {
+        
+        //makes email case insensitive
         let emailRegexed = new RegExp(email, 'i');
         return await User.findOneAndUpdate({ email: emailRegexed }, data, { new: true });
     }

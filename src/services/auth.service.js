@@ -11,6 +11,8 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
 class AuthService {
+
+    //Compare user email and encrypted password
     async login(email, password) {
         let emailRegexed = new RegExp(email, 'i');
 
@@ -30,8 +32,6 @@ class AuthService {
 
     }
 
-    async logout() {
-    }
 }
 
 module.exports = new AuthService();

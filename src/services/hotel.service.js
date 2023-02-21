@@ -15,9 +15,11 @@ class HotelService {
     }
 
     async findRoom(roomName, roomTypeId, minPrice, maxPrice) {
+        
+        //makes room name case insensitive
         let roomNameRegex = new RegExp(roomName, 'i');
 
-
+//Checks for matches in different columns
         return await Room.find().
             and([
                 {
