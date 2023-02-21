@@ -24,7 +24,7 @@ Before you can access the API, you need to create an account and login. Send a P
 
 Once succesfully registered, go to: **localhost:5000/api/v1/auth/login**; supply it your email and password; you'll get a refresh token and access token, pass in the access token to the authorization header before making any requests, depending on your user type you should have access to most of the API resources.
 
-### Types of Inputs
+### Endpoints
 The API makes use of three main methods of sending inputs.
 
 1. Parameters: localhost:5000/api/v1/room-type/63e772e968f23b2c2b3ea342
