@@ -1,6 +1,7 @@
 const userService = require('../services/user.service');
 const constants = require("../constants");
 const { MESSAGES } = constants;
+const joi = require('joi');
 
 class UserController {
 
@@ -9,11 +10,39 @@ class UserController {
     };
 
     async signUp(req, res) {
+        const joiSchema = joi.object({
+            first_name: joi.string()
+                .min(3)
+                .max(200)
+                .required(),
+
+            last_name: joi.string()
+                .min(3)
+                .max(200)
+                .required(),
+
+            email: joi.string()
+                .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+                .required(),
+
+            password: joi.string()
+                .min(5)
+                .max(200)
+                .required(),
+
+            user_type: joi.string()
+                .min(4)//user
+                .max(5)//admin
+                .required()
+        });
         try {
-            const data = await userService.createUser(req.body);
-            res
-                .status(201)
-                .send({ message: MESSAGES.CREATED, success: true, data });
+            const validBody = await joiSchema.validateAsync(req.body);
+                const data = await userService.createUser(req.body);
+                res
+                    .status(201)
+                    .send({ message: MESSAGES.CREATED, success: true, data });
+         
+
         } catch (err) {
             res
                 .status(500)

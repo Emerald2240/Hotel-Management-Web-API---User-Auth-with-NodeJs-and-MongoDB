@@ -5,7 +5,7 @@ dotenv.config();
 const constants = require("../constants");
 const { MESSAGES } = constants;
 const authService = require("../services/auth.service");
-
+const joi = require('joi');
 const jwt = require('jsonwebtoken');
 
 var user = [];
@@ -34,6 +34,26 @@ class AuthController {
     }
 
     async login(req, res) {
+
+        const joiSchema = joi.object({
+          
+            email: joi.string()
+                .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+                .required(),
+
+            password: joi.string()
+                .min(5)
+                .max(200)
+                .required(),
+        });
+
+        try{
+            const value = await joiSchema.validateAsync({email: req.body.email, password: req.body.password});
+        }catch(err){
+            res.status(418).send({message: "Invalid credentials"})
+        }
+
+
         user = await authService.login(req.body.email, req.body.password);
         console.log(user);
         if (user) {
