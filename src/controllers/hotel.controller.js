@@ -4,7 +4,7 @@ const { MESSAGES } = constants;
 //#endregion
 
 
-class HotelhotelService {
+class HotelService {
 
     //#region GET  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -216,4 +216,4 @@ class HotelhotelService {
 
 }
 
-module.exports = new HotelhotelService();
+module.exports = new HotelService();
